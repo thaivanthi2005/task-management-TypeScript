@@ -7,10 +7,9 @@
     // Environment Settings
     "module": "CommonJS",
     "target": "ES2020",
-    "moduleResolution": "node",
     "lib": ["ES2020"],
     "types": ["node"],
-
+    "moduleResolution": "node",
     // Other Outputs
     "sourceMap": true,
     "removeComments": false,
