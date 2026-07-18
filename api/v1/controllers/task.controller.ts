@@ -1,0 +1,27 @@
+import { Request, Response } from "express";
+
+import mongoose from "mongoose";
+import Task from "../models/task.model";
+export const index = async (req: Request, res: Response) => {
+  const tasks = await Task.find({
+    deleted: false,
+  });
+
+  res.json(tasks);
+};
+
+export const detail = async (req: Request, res: Response) => {
+  const id = req.params.id;
+
+  const task = await Task.findOne({
+    _id: id,
+    deleted: false,
+  });
+
+  if (!task) {
+    res.status(404).json({ message: "Task not found" });
+    return;
+  }
+
+  res.json(task);
+};
