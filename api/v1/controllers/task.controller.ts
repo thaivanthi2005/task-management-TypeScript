@@ -9,11 +9,18 @@ export const index = async (req: Request, res: Response) => {
     status?: string;
   }
   const find: FIND = { deleted: false };
+
+  const sort = {};
+  if (req.query.sortKey && req.query.value) {
+    const sortKey = req.query.sortKey.toString();
+    const value = req.query.value.toString();
+    sort[sortKey] = value;
+  }
   if (req.query.status) {
     find.status = req.query.status.toString();
   }
-  const tasks = await Task.find(find);
-
+  const tasks = await Task.find(find).sort(sort);
+  console.log(req.query);
   res.json(tasks);
 };
 

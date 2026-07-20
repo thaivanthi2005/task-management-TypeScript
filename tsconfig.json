@@ -3,7 +3,7 @@
     // File Layout
     "rootDir": ".",
     "outDir": "./dist",
-
+    "noImplicitAny": false,
     // Environment Settings
     "module": "CommonJS",
     "target": "ES2020",
