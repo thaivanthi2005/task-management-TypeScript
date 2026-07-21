@@ -136,3 +136,21 @@ export const changeMulti = async (req, res) => {
     });
   }
 };
+
+// [POST] /api/v1/tasks/create
+export const create = async (req, res) => {
+  try {
+    const task = new Task(req.body);
+    const data = await task.save();
+    res.json({
+      code: 200,
+      message: "TẠO THÀNH CÔNG ____!",
+      data: data,
+    });
+  } catch {
+    res.json({
+      code: 400,
+      message: "TẠO THẤT BẠN !!!!",
+    });
+  }
+};
