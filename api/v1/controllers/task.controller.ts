@@ -154,3 +154,19 @@ export const create = async (req, res) => {
     });
   }
 };
+// [DELETE] /api/v1/tasks/delete/:id
+export const deleteTask = async (req, res) => {
+  try {
+    const id = req.params.id;
+    await Task.deleteOne({ _id: id });
+    res.json({
+      code: 200,
+      messsage: "Xóa thành công",
+    });
+  } catch (error) {
+    res.json({
+      code: 400,
+      messsage: "Xóa không thành công !!! LỖI !!!",
+    });
+  }
+};
