@@ -3,9 +3,10 @@ import { Request, Response } from "express";
 import mongoose from "mongoose";
 import Task from "../models/task.model";
 import paginatonHelper from "../../../helper/pagination";
-
+import searchHelper from "../../../helper/search";
 export const index = async (req: Request, res: Response) => {
   interface FIND {
+    title?: RegExp | string;
     deleted: boolean;
     status?: string;
   }
@@ -20,7 +21,7 @@ export const index = async (req: Request, res: Response) => {
   if (req.query.status) {
     find.status = req.query.status.toString();
   }
-
+  //Pagination
   const initPagination = {
     currentPage: 1,
     limitTask: 2,
@@ -31,6 +32,11 @@ export const index = async (req: Request, res: Response) => {
     req.query,
     totalPage,
   );
+  //Pagination
+  const objectSearch = searchHelper(req.query);
+  if (req.query.keyword) {
+    find.title = objectSearch.regex;
+  }
   const tasks = await Task.find(find)
     .sort(sort)
     .limit(objectPagination.limitItems)
