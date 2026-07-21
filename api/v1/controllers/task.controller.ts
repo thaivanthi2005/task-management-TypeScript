@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 
 import mongoose from "mongoose";
 import Task from "../models/task.model";
+import paginatonHelper from "../../../helper/pagination";
 
 export const index = async (req: Request, res: Response) => {
   interface FIND {
@@ -19,8 +20,21 @@ export const index = async (req: Request, res: Response) => {
   if (req.query.status) {
     find.status = req.query.status.toString();
   }
-  const tasks = await Task.find(find).sort(sort);
-  console.log(req.query);
+
+  const initPagination = {
+    currentPage: 1,
+    limitTask: 2,
+  };
+  const totalPage = await Task.countDocuments(find);
+  const objectPagination = paginatonHelper(
+    initPagination,
+    req.query,
+    totalPage,
+  );
+  const tasks = await Task.find(find)
+    .sort(sort)
+    .limit(objectPagination.limitItems)
+    .skip(objectPagination.skip);
   res.json(tasks);
 };
 
