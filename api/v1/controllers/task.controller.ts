@@ -4,6 +4,8 @@ import mongoose from "mongoose";
 import Task from "../models/task.model";
 import paginatonHelper from "../../../helper/pagination";
 import searchHelper from "../../../helper/search";
+
+// [GET] /api/v1/tasks
 export const index = async (req: Request, res: Response) => {
   interface FIND {
     title?: RegExp | string;
@@ -44,6 +46,7 @@ export const index = async (req: Request, res: Response) => {
   res.json(tasks);
 };
 
+// [GET] /api/v1/tasks/detail/:id
 export const detail = async (req: Request, res: Response) => {
   const id = req.params.id;
 
@@ -58,4 +61,29 @@ export const detail = async (req: Request, res: Response) => {
   }
 
   res.json(task);
+};
+
+//[PATCH] /api/v1/tasks//change-status/:id
+export const change_status = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const status = req.body.status;
+    await Task.updateOne(
+      {
+        _id: id,
+      },
+      {
+        status: status,
+      },
+    );
+    res.json({
+      message: "Cập nhật trạng thái thành công",
+      code: 200,
+    });
+  } catch {
+    res.json({
+      message: "Cập nhật trạng thái KHÔNG thành công",
+      code: 400,
+    });
+  }
 };

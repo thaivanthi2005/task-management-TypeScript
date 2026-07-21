@@ -4,7 +4,9 @@ import * as database from "./config/database";
 import mainV1Router from "./api/v1/routes/index.route";
 
 const app: Express = express();
+
 const port: number | string = process.env.PORT || 3000;
+app.use(express.json());
 
 dotenv.config();
 database.connect();
