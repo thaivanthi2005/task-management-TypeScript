@@ -91,9 +91,13 @@ export const change_status = async (req: Request, res: Response) => {
 //[PATCH] /api/v1/tasks//change-multi
 export const changeMulti = async (req, res) => {
   try {
+    enum Key {
+      STATUS = "status",
+      DELETE = "delete",
+    }
     const { ids, key, value } = req.body;
     switch (key) {
-      case "status":
+      case Key.STATUS:
         await Task.updateMany(
           {
             _id: { $in: ids },
@@ -107,7 +111,7 @@ export const changeMulti = async (req, res) => {
           code: 200,
         });
         break;
-      case "deleted":
+      case Key.DELETE:
         await Task.updateMany(
           {
             _id: { $in: ids },
@@ -154,6 +158,7 @@ export const create = async (req, res) => {
     });
   }
 };
+
 // [DELETE] /api/v1/tasks/delete/:id
 export const deleteTask = async (req, res) => {
   try {
