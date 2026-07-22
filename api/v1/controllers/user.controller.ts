@@ -4,7 +4,6 @@ import {
   generateRandomString,
   generateRandomNumber,
 } from "../../../helper/generate";
-
 import sendMailHelper from "../../../helper/sendMail";
 
 // [POST] /api/v1/users/register
@@ -70,14 +69,9 @@ export const login = async (req, res) => {
 
 // [GET] /api/v1/users/detail
 export const detail = async (req, res) => {
-  const id: string = req.params.id;
-  const user = await User.findOne({
-    _id: id,
-    deleted: false,
-  }).select("-password -token");
   res.json({
     code: 200,
     message: "TEST",
-    info: user,
+    info: req.user,
   });
 };

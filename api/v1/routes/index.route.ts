@@ -1,8 +1,10 @@
 import { taskRouters } from "./task.route";
 import { userRouters } from "./user.route";
 import { Express } from "express";
+import requireAuth from "../middleware/auth.middleware";
+
 const mainV1Router = (app: Express) => {
-  app.use("/api/v1/tasks", taskRouters);
+  app.use("/api/v1/tasks", requireAuth, taskRouters);
   app.use("/api/v1/user", userRouters);
 };
 
