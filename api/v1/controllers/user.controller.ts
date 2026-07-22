@@ -67,3 +67,17 @@ export const login = async (req, res) => {
     message: "ĐĂNG NHẬP THÀNH CÔNG",
   });
 };
+
+// [GET] /api/v1/users/detail
+export const detail = async (req, res) => {
+  const id: string = req.params.id;
+  const user = await User.findOne({
+    _id: id,
+    deleted: false,
+  }).select("-password -token");
+  res.json({
+    code: 200,
+    message: "TEST",
+    info: user,
+  });
+};
