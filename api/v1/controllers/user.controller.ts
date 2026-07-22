@@ -37,3 +37,33 @@ export const register = async (req, res) => {
   }
   console.log(req.body);
 };
+
+// [POST] /api/v1/users/login
+export const login = async (req, res) => {
+  const email: string = req.body.email;
+  const password: string = md5(req.body.password);
+  const user = await User.findOne({
+    email: email,
+    deleted: false,
+  });
+  if (!user) {
+    res.json({
+      code: 400,
+      message: "ĐĂNG NHẬP KHÔNG THÀNH CÔNG ( EMAIL KHÔNG TỒN TẠI )",
+    });
+    return;
+  }
+  if (password !== user.password) {
+    res.json({
+      code: 400,
+      message: "ĐĂNG NHẬP KHÔNG THÀNH CÔNG ( SAI MẬT KHẨU )",
+    });
+    return;
+  }
+  const token = user.token;
+  res.cookie("token", token);
+  res.json({
+    code: 200,
+    message: "ĐĂNG NHẬP THÀNH CÔNG",
+  });
+};
